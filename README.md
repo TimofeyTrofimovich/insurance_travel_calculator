@@ -40,12 +40,43 @@ When you enter person data, it will check if such a person already exists in dat
 Then it saves all the agreement data, so that next you can get the whole information about the agreement:
 all the persons with their data, period of the agreement, country, trip cost, insurance limit level, all the selected risks with their prices and finally the price of the agreement.
 
+
+To see REST documentation, you can run application and go to swagger ui page:
+
+http://localhost:8080/swagger-ui/index.html#/travel-calculate-premium-controller-v-2/calculatePremium
+
 We can test the app with such endpoints:
 
 http://localhost:8080/insurance/travel/api/v2/
-This controller has a JSON response, so you can test it with Postman
+This controller has a JSON response, so you can test it with Postman or Swagger.
+
+Here is the example of JSON request to test:
 
 
+{
+"agreementDateFrom" : "2025-05-25",
+"agreementDateTo" : "2025-05-29",
+"country" : "SPAIN",
+"selected_risks":["TRAVEL_CANCELLATION", "TRAVEL_MEDICAL"],
+"persons" : [
+{
+"personUUID" : "1",
+"personFirstName" : "Vasja",
+"personLastName" : "Pupkin",
+"personBirthDate" : "2000-05-29",
+"medicalRiskLimitLevel" : "LEVEL_10000",
+"travelCost" :  "100.00"
+},
+{
+"personUUID" : "1212",
+"personFirstName" : "Petja",
+"personLastName" : "Pupkin",
+"personBirthDate" : "1950-02-29",
+"medicalRiskLimitLevel" : "LEVEL_15000",
+"travelCost" :  "100.00"
+}
+]
+}
 
 
 http://localhost:8080/insurance/travel/web/v2
@@ -58,7 +89,10 @@ Looks like this:
 
 As you see, we can add more persons and remove it.
 
+
 And here is the result:
+
+
 ![Result](images/web_answer.png).
 
 All the fields has many validations, so you won't be able to leave some necessary data empty or incorrect.
@@ -67,7 +101,22 @@ All the fields has many validations, so you won't be able to leave some necessar
 
 
 
-http://localhost:8080/insurance/travel/api/internal/agreement/{agreement_uuid}
-this controller gets the uuid of agreement and if such agreement exists returns of the information about this agreement
+http://localhost:8080/insurance/travel/api/internal/agreement/{agreement_uuid}.
+This controller gets the uuid of agreement and if such agreement exists returns all the information about this agreement.
+
+You can check the agreement uuid in h2-console in table 'agreements'
+
+Example of the response:
+![Result](images/agreement_part_1.png)
+
+![Result](images/agreement_part_2.png).
+
+
+Saving to database and retrieving data from database is implemented using Hibernate and JPA Repositories.
+
+There are also plenty of unit test written. I used JUnit and Mockito there.
+
+
+
 
 
